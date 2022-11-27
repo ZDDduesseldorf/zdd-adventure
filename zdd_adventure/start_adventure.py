@@ -5,12 +5,33 @@ import json
 import time
 import zdd_adventure.save as save
 import zdd_adventure.change_place as change_place
-from zdd_adventure.graphics import countdown, slow_print
+from zdd_adventure.graphics import countdown, slow_print, slow_list_print,percent
 
 end_game = False
 
 def start():
     print(">>>> Loading Data...")
+    percent()
+    text = ["""
+                    ██     ██ ███████ ██       ██████  ██████  ███    ███ ███████ 
+                    ██     ██ ██      ██      ██      ██    ██ ████  ████ ██      
+                    ██  █  ██ █████   ██      ██      ██    ██ ██ ████ ██ █████   
+                    ██ ███ ██ ██      ██      ██      ██    ██ ██  ██  ██ ██      
+                     ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████ """,
+                        """ 
+                                           ████████  ██████  
+                                              ██    ██    ██ 
+                                              ██    ██    ██ 
+                                              ██    ██    ██ 
+                                              ██     ██████""",
+                          
+    """
+    ███████ ██████  ██████           █████  ██████  ██    ██ ███████ ███    ██ ████████ ██    ██ ██████  ███████ 
+       ███  ██   ██ ██   ██         ██   ██ ██   ██ ██    ██ ██      ████   ██    ██    ██    ██ ██   ██ ██      
+      ███   ██   ██ ██   ██         ███████ ██   ██ ██    ██ █████   ██ ██  ██    ██    ██    ██ ██████  █████   
+     ███    ██   ██ ██   ██         ██   ██ ██   ██  ██  ██  ██      ██  ██ ██    ██    ██    ██ ██   ██ ██      
+    ███████ ██████  ██████  ███████ ██   ██ ██████    ████   ███████ ██   ████    ██     ██████  ██   ██ ███████ """]
+    slow_list_print(text)
     #spieldaten laden
     acc = save.load_data()
     accounts = list(acc.keys())
