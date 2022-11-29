@@ -1,50 +1,51 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-path = os.path.dirname(os.path.abspath(__file__))
 
 
-def load_data():
-    # Opening JSON file
-    for f in os.listdir(os.path.dirname(os.path.abspath(__file__))):
-        print(f)
-    f = open(path + '/player_data.json')
+_filename_json_empty = os.path.join(os.path.dirname(__file__), "player_data_empty.json")
+_filename_json_saves = os.path.join(os.path.dirname(__file__), "player_data.json")
 
+
+def load_data(filename: str):
+    """Opening JSON file.
+    """
+    f = open(filename, "r")
     # returns JSON object as a dictionary
     data = json.load(f)
     f.close()
     return data
 
-def load_player_data(name):
-    # Opening JSON file
-    f = open(path + '/player_data.json')
 
-    # returns JSON object as a dictionary
-    data = json.load(f)
-    f.close()
-    data2 = data[name]
-    return data2
+def initialize_saves():
+    try:
+        data_saves = load_data(_filename_json_saves)
+        return data_saves
+    except FileNotFoundError:
+        print("No saved games found.")
+        return dict()
 
-def save_data(data):
-    ld = load_data()
-    ld[data["name"]] = data
-    with open(path + '/player_data.json', 'w') as f:
-        json.dump(ld, f)
-        
-def create_new_player(name):
-    data = {}
-    data["name"] = name
-    game_over(data)
 
-def game_over(data1):
-    name = data1["name"]
-    data = {}
-    data["name"] = name
-    data["inventory"] = [
-        "Studierendenausweis"
-    ]
-    data["floor"] = -1
-    data["room"] = 1
-    data["visited_rooms"] = []
-    save_data(data)
-    return data
+def load_player_data(data_saves, name):
+    """Load player data, if available"""
+    try:
+        player_data = data_saves[name]
+        return player_data
+    except:
+        print(f"No data found for player name {name}.")
+        print("Will create new player.")
+        return create_new_player(data_saves, name)
+
+
+def save_data(data_saves, data_current):
+    name = data_current["name"]
+    data_saves[name] = data_current
+    with open(_filename_json_saves, 'w') as f:
+        json.dump(data_save, f)
+
+
+def create_new_player(data_saves, name):
+    # Check if saves exist or not
+    data_saves[name] = load_data(_filename_json_empty)
+    data_saves[name]["name"] = name
+    return data_saves
